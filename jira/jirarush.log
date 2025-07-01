@@ -1,0 +1,3 @@
+2025-06-30 16:39:30.342 [    main] WARN | o.h.b.i.MetadataBuilderImpl$MetadataBuildingOptionsImpl.lambda$new$1:626 HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2025-06-30 16:39:34.029 [    main] DEBUG| o.s.scheduling.concurrent.ExecutorConfigurationSupport.initialize:181 Initializing ExecutorService 'taskScheduler'
+2025-06-30 16:39:54.576 [downHook] DEBUG| o.s.scheduling.concurrent.ExecutorConfigurationSupport.shutdown:218 Shutting down ExecutorService 'taskScheduler'
