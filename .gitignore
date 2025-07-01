@@ -5,5 +5,4 @@ target
 logs
 attachments
 *.patch
-resources
-application-secret.properties
+/src/main/resources/application-secret.properties
