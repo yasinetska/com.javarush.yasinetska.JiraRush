@@ -62,6 +62,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/users").anonymous()
                 .requestMatchers("/api/**").authenticated()
                 .and().httpBasic()
+                .and().exceptionHandling()
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER) // support sessions Cookie for UI ajax
                 .and().csrf().disable();

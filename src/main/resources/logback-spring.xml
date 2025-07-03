@@ -2,15 +2,12 @@
 <configuration scan="true" scanPeriod="300 seconds">
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
-    <!-- Кастомный паттерн для консоли -->
     <property name="CONSOLE_LOG_PATTERN"
               value="%d{HH:mm:ss.SSS} [%8.8thread] %highlight(%-5.5level)| %class{60}.%M:%L %msg%n"/>
 
-    <!-- Кастомный паттерн для файла -->
     <property name="FILE_LOG_PATTERN"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%8.8thread] %-5level| %class{60}.%M:%L %msg%n"/>
 
-    <!-- Профиль разработки (local, dev) -->
     <springProfile name="!prod">
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
@@ -18,7 +15,6 @@
             </encoder>
         </appender>
 
-        <!-- Детальные настройки логирования -->
         <logger name="org.springframework" level="INFO"/>
         <logger name="org.springframework.web" level="WARN"/>
         <logger name="org.springframework.web.servlet.mvc" level="DEBUG"/>
@@ -33,7 +29,6 @@
         </root>
     </springProfile>
 
-    <!-- Профиль продакшена -->
     <springProfile name="prod">
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>jira/jirarush.log</file>
@@ -46,7 +41,6 @@
             </rollingPolicy>
         </appender>
 
-        <!-- Минимальное логирование в prod -->
         <logger name="org.hibernate.SQL" level="WARN"/>
         <logger name="org.springframework.web" level="WARN"/>
 
@@ -55,7 +49,6 @@
         </root>
     </springProfile>
 
-    <!-- Общие настройки для всех профилей -->
     <logger name="org.hibernate.orm.jdbc.bind" level="TRACE"/>
     <logger name="org.springframework.scheduling" level="DEBUG"/>
 </configuration>

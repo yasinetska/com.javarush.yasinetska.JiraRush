@@ -6,9 +6,9 @@ import com.javarush.jira.ref.internal.ReferenceRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,6 +24,9 @@ import static com.javarush.jira.common.util.Util.getExisted;
 public class ReferenceService {
     static Map<RefType, Map<String, RefTo>> refSelect;
     private final ReferenceRepository repository;
+
+
+    @Qualifier("referenceMapperImpl")
     private final ReferenceMapper mapper;
 
     public static Map<String, RefTo> getRefs(RefType refType) {

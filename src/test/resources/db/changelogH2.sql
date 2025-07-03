@@ -1,0 +1,112 @@
+DROP TABLE IF EXISTS USER_BELONG;
+DROP TABLE IF EXISTS ACTIVITY;
+DROP TABLE IF EXISTS TASK;
+DROP TABLE IF EXISTS SPRINT;
+DROP TABLE IF EXISTS PROJECT;
+DROP TABLE IF EXISTS CONTACT;
+DROP TABLE IF EXISTS PROFILE;
+DROP TABLE IF EXISTS USER_ROLE;
+DROP TABLE IF EXISTS USERS;
+DROP TABLE IF EXISTS REFERENCE;
+
+CREATE TABLE USERS (
+                       ID BIGINT AUTO_INCREMENT PRIMARY KEY,
+                       EMAIL VARCHAR(128) NOT NULL UNIQUE,
+                       PASSWORD VARCHAR(128) NOT NULL,
+                       FIRST_NAME VARCHAR(32) NOT NULL,
+                       LAST_NAME VARCHAR(32),
+                       DISPLAY_NAME VARCHAR(32) NOT NULL
+);
+
+CREATE TABLE USER_ROLE (
+                           USER_ID BIGINT NOT NULL,
+                           ROLE INTEGER NOT NULL,
+                           CONSTRAINT UK_USER_ROLE UNIQUE (USER_ID, ROLE),
+                           CONSTRAINT FK_USER_ROLE FOREIGN KEY (USER_ID) REFERENCES USERS(ID) ON DELETE CASCADE
+);
+
+CREATE TABLE PROFILE (
+                         ID BIGINT PRIMARY KEY,
+                         LAST_FAILED_LOGIN TIMESTAMP,
+                         LAST_LOGIN TIMESTAMP,
+                         MAIL_NOTIFICATIONS INTEGER,
+                         CONSTRAINT FK_PROFILE_USERS FOREIGN KEY (ID) REFERENCES USERS(ID) ON DELETE CASCADE
+);
+
+CREATE TABLE CONTACT (
+                         ID BIGINT NOT NULL,
+                         CODE VARCHAR(32) NOT NULL,
+                         "VALUE" VARCHAR(256) NOT NULL,
+                         PRIMARY KEY (ID, CODE),
+                         CONSTRAINT FK_CONTACT_PROFILE FOREIGN KEY (ID) REFERENCES PROFILE(ID) ON DELETE CASCADE
+);
+
+CREATE TABLE PROJECT (
+                         ID BIGINT AUTO_INCREMENT PRIMARY KEY,
+                         CODE VARCHAR(32) NOT NULL UNIQUE,
+                         TITLE VARCHAR(1024) NOT NULL,
+                         DESCRIPTION VARCHAR(4096) NOT NULL,
+                         TYPE_CODE VARCHAR(32) NOT NULL,
+                         PARENT_ID BIGINT,
+                         CONSTRAINT FK_PROJECT_PARENT FOREIGN KEY (PARENT_ID) REFERENCES PROJECT(ID) ON DELETE CASCADE
+);
+
+CREATE TABLE REFERENCE (
+                           ID BIGINT AUTO_INCREMENT PRIMARY KEY,
+                           CODE VARCHAR(32) NOT NULL,
+                           REF_TYPE SMALLINT NOT NULL,
+                           TITLE VARCHAR(1024) NOT NULL,
+                           AUX VARCHAR(1024),
+                           STARTPOINT TIMESTAMP,
+                           ENDPOINT TIMESTAMP,
+                           CONSTRAINT UK_REFERENCE_REF_TYPE_CODE UNIQUE (REF_TYPE, CODE)
+);
+
+CREATE TABLE SPRINT (
+                        ID BIGINT AUTO_INCREMENT PRIMARY KEY,
+                        STATUS_CODE VARCHAR(32) NOT NULL,
+                        STARTPOINT TIMESTAMP,
+                        ENDPOINT TIMESTAMP,
+                        CODE VARCHAR(32) NOT NULL,
+                        PROJECT_ID BIGINT NOT NULL,
+                        CONSTRAINT FK_SPRINT_PROJECT FOREIGN KEY (PROJECT_ID) REFERENCES PROJECT(ID) ON DELETE CASCADE
+);
+
+CREATE TABLE TASK (
+                      ID BIGINT AUTO_INCREMENT PRIMARY KEY,
+                      TITLE VARCHAR(1024) NOT NULL,
+                      TYPE_CODE VARCHAR(32) NOT NULL,
+                      STATUS_CODE VARCHAR(32) NOT NULL,
+                      PROJECT_ID BIGINT NOT NULL,
+                      SPRINT_ID BIGINT,
+                      STARTPOINT TIMESTAMP,
+                      CONSTRAINT FK_TASK_PROJECT FOREIGN KEY (PROJECT_ID) REFERENCES PROJECT(ID) ON DELETE CASCADE,
+                      CONSTRAINT FK_TASK_SPRINT FOREIGN KEY (SPRINT_ID) REFERENCES SPRINT(ID) ON DELETE SET NULL
+);
+
+CREATE TABLE ACTIVITY (
+                          ID BIGINT AUTO_INCREMENT PRIMARY KEY,
+                          AUTHOR_ID BIGINT NOT NULL,
+                          TASK_ID BIGINT NOT NULL,
+                          UPDATED TIMESTAMP,
+                          COMMENT VARCHAR(4096),
+                          TITLE VARCHAR(1024),
+                          DESCRIPTION VARCHAR(4096),
+                          ESTIMATE INTEGER,
+                          TYPE_CODE VARCHAR(32),
+                          STATUS_CODE VARCHAR(32),
+                          PRIORITY_CODE VARCHAR(32),
+                          CONSTRAINT FK_ACTIVITY_USERS FOREIGN KEY (AUTHOR_ID) REFERENCES USERS(ID) ON DELETE CASCADE,
+                          CONSTRAINT FK_ACTIVITY_TASK FOREIGN KEY (TASK_ID) REFERENCES TASK(ID) ON DELETE CASCADE
+);
+
+CREATE TABLE USER_BELONG (
+                             ID BIGINT AUTO_INCREMENT PRIMARY KEY,
+                             OBJECT_ID BIGINT NOT NULL,
+                             OBJECT_TYPE INTEGER NOT NULL,
+                             USER_ID BIGINT NOT NULL,
+                             USER_TYPE_CODE VARCHAR(32) NOT NULL,
+                             STARTPOINT TIMESTAMP,
+                             ENDPOINT TIMESTAMP,
+                             CONSTRAINT FK_USER_BELONG FOREIGN KEY (USER_ID) REFERENCES USERS(ID) ON DELETE CASCADE
+);

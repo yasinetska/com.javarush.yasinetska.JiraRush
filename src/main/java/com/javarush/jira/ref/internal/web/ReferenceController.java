@@ -9,6 +9,8 @@ import com.javarush.jira.ref.internal.ReferenceRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,8 @@ import static com.javarush.jira.common.util.validation.ValidationUtil.checkNew;
 
 public class ReferenceController {
     static final String REST_URL = "/api/admin/refs";
+
+    @Qualifier("referenceMapperImpl")
     private ReferenceMapper mapper;
     private ReferenceService service;
     private ReferenceRepository repository;

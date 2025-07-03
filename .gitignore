@@ -1,3 +1,4 @@
+# Default ignored files
 .idea
 out
 target
@@ -5,4 +6,3 @@ target
 logs
 attachments
 *.patch
-/src/main/resources/application-secret.properties

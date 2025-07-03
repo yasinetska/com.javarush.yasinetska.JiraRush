@@ -26,7 +26,11 @@ public abstract class AbstractProfileController {
         ValidationUtil.assureIdConsistent(profileTo, id);
         ValidationUtil.assureIdConsistent(profileTo.getContacts(), id);
         ProfileUtil.checkContactsExist(profileTo.getContacts());
-        Profile profile = profileMapper.updateFromTo(profileRepository.getOrCreate(profileTo.id()), profileTo);
+
+
+        Profile profile = profileRepository.getOrCreate(id);
+        profileMapper.updateFromTo(profile, profileTo);
+
         profileRepository.save(profile);
     }
 }
