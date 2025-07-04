@@ -2,10 +2,19 @@ services:
   app:
     build: .
     container_name: jira-app
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 7s
     networks:
       - app-net
 
     environment:
+      SERVER_PORT: 8081
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -20,10 +29,21 @@ services:
       MAIL_PASSWORD: ${MAIL_PASSWORD}
       MAIL_PROTOCOL: ${MAIL_PROTOCOL}
 
-    ports:
-      - "8081:8080"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+  nginx:
+    image: nginx:alpine
+    container_name: jira-nginx
+    depends_on:
+      app:
+        condition: service_healthy
+    networks:
+      - app-net
+    ports:
+      - "80:80"
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf:ro
 
 networks:
   app-net:
