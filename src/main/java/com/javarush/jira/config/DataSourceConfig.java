@@ -21,7 +21,7 @@ public class DataSourceConfig {
     public DataSource productionDataSource() {
         return DataSourceBuilder.create()
                 .driverClassName("org.postgresql.Driver")
-                .url("jdbc:postgresql://localhost:5432/jira")
+                .url("jdbc:postgresql://postgres-db:5432/jira")
                 .username(dbUsername)
                 .password(dbPassword)
                 .build();

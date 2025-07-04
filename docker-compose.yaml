@@ -1,0 +1,30 @@
+services:
+  app:
+    build: .
+    container_name: jira-app
+    networks:
+      - app-net
+
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+      SPRING_DATASOURCE_URL: ${DB_URL}
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_PROTOCOL: ${MAIL_PROTOCOL}
+
+    ports:
+      - "8081:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  app-net:
+    external: true

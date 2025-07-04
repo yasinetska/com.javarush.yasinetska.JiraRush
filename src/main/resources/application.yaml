@@ -1,10 +1,11 @@
 #  https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 app:
-  host-url: http://localhost:8080
+  host-url: http://localhost:8081
   test-mail: jira4jr@gmail.com
   templates-update-cache: 5s
   mail-sending-props:
     core-pool-size: 8
+
     max-pool-size: 100
 
 spring:
@@ -22,15 +23,21 @@ spring:
     hibernate:
       ddl-auto: validate
 
+  thymeleaf:
+    view-prefix: classpath:/view/
+    mails-prefix: classpath:/mails/
+    static-prefix: classpath:/static/
+    suffix: .html
+    cache: false
+
     properties:
-      #  http://docs.jboss.org/hibernate/orm/5.3/userguide/html_single/Hibernate_User_Guide.html#configurations
+       #  http://docs.jboss.org/hibernate/orm/5.3/userguide/html_single/Hibernate_User_Guide.html#configurations
       hibernate:
         format_sql: true
         default_batch_fetch_size: 20
         # https://stackoverflow.com/questions/21257819/what-is-the-difference-between-hibernate-jdbc-fetch-size-and-hibernate-jdbc-batc
         jdbc.batch_size: 20
   datasource:
-    url: jdbc:postgresql://localhost:5432/jira
     driver-class-name: org.postgresql.Driver
 
   liquibase:
@@ -84,17 +91,9 @@ spring:
           starttls:
             enable: true
           auth: true
-  thymeleaf.check-template-location: false
 
   mvc.throw-exception-if-no-handler-found: true
   web.resources.add-mappings: false
-
-# logging:
-#  level:
-#    root: INFO
-#    com.javarush.jira: DEBUG
-#    com.javarush.jira.common.config.MvcConfig: DEBUG
-#    org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
 
 server:
   #  https://springdoc.org/index.html#how-can-i-deploy-springdoc-openapi-ui-behind-a-reverse-proxy

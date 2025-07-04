@@ -160,11 +160,9 @@
             <version>5.8.0</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
-
     <build>
+        <finalName>jira-1.0</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
